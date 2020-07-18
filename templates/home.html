@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS SELECTOR FORM</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<script>
+function myFunction() {
+var text1= $('#text1').val();
+var text2= $('#text2').val();
+var counter=0;
+  $.ajax({
+              url: "/join",
+              type: "POST",
+              data: {text1:text1,
+              text2:text2}
+          }).done(function(response) {
+            var html= "<p> <b> RESULT : <b><p>";
+            response =response.result;
+                $.each(response,function(key,val){
+                    html+="<p>"+key+":"+"<p>"
+                    counter++;
+                    $.each(val, function(index2, value2) {
+                        html+="<p>"+index2+":"+value2+"<p>"
+                    }); 
+                html+="<hr>"
+                });
+               
+                html +="<p> String: "+" ' "+text2+" ' "+" found at "+counter+" positions. <p>"
+                $(".show-data").append(html);
+            });
+};
+  </script>
+<body>
+    <div>
+        <h1> Displaying all CSS Selectors </h1>
+            <label for="text1">URL:</label>
+            <input type="text" id="text1" name="text1"><br><br>
+            <label for="text2">Search String:</label>
+            <input type="text" id="text2" name="text2"><br><br>
+            <button type="submit" id="clicked" onclick="myFunction()">Submit</button>
+    </div>   
+    <div class="show-data" >
+    </div>
+</body>
+</html>
